@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void inputNumbers(const string &s);
+void inputNumbers(const string &s); 
 
 int main(int argc, char** argv) {
     string wordInput;
