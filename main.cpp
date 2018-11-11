@@ -1,128 +1,103 @@
-
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <array>
+#include <stack>
 #include <vector>
-#include <list>
+#include <queue>
 using namespace std;
 
-void numberToWord(const string &str);
+void numberToWord(const string &s);
 
 int main(int argc, char** argv) {
     string input;//string of integers
     cout << "Enter word" << endl;
     cin >> input;
     numberToWord(input);
+    
+    
     return 0;
 }
 
 
 void numberToWord(const string &str){
     int stringLength = str.length();
-    list<array<char> > l;//Creates our list of arrays(char)
-    array<char,4> arr;
+    queue<stack<char> > q;//Creates our queue of stacks(char)
+    stack<char> s;
     vector<string> possibleWords;//Push possible words into this vector
     ifstream inputFile;
     string fileName = "CutieHackDictionary.txt";
     inputFile.open(fileName);
     string temp; 
     string currentWord;
+    stack<char> copy;
     
-    //Create list of arrays
+    //Create our queue of stacks
     for(int i = 0; i < stringLength; i++){//Going through our input(#)
         if(str[i] == '2'){
-            arr[0] = 'A';
-            arr[1] = 'B';
-            arr[2] = 'C';
+            s.push('C');
+            s.push('B');
+            s.push('A');
         }else if(str[i] == '3'){
-            arr[0] = 'D';
-            arr[1] = 'E';
-            arr[2] = 'F';
+            s.push('F');
+            s.push('E');
+            s.push('D');
         }else if(str[i] == '4'){
-            arr[0] = 'G';
-            arr[1] = 'H';
-            arr[2] = 'I';
+            s.push('I');
+            s.push('H');
+            s.push('G');
         }else if(str[i] == '5'){
-            arr[0] = 'J';
-            arr[1] = 'K';
-            arr[2] = 'L';
+            s.push('L');
+            s.push('K');
+            s.push('J');
         }else if(str[i] == '6'){
-            arr[0] = 'M';
-            arr[1] = 'N';
-            arr[2] = 'O';
+            s.push('O');
+            s.push('N');
+            s.push('M');
         }else if(str[i] == '7'){
-            arr[0] = 'P';
-            arr[1] = 'Q';
-            arr[2] = 'R';
-            arr[3] = 'S';
+            s.push('S');
+            s.push('R');
+            s.push('Q');
+            s.push('P');
         }else if(str[i] == '8'){
-            arr[0] = 'T';
-            arr[1] = 'U';
-            arr[2] = 'V';
+            s.push('V');
+            s.push('U');
+            s.push('T');
         }else if(str[i] == '9'){
-            arr[0] = 'W';
-            arr[1] = 'X';
-            arr[2] = 'Y';
-            arr[3] = 'Z';
+            s.push('Z');
+            s.push('Y');
+            s.push('X');
+            s.push('W');
         }
-        l.push_back(arr);
-        //Empty the array
-        fill(arr.begin(),arr.end(),0);
+        q.push(s);
+        s.pop();
+        s.pop();
+        s.pop();
+        if(str[i] == 7 || str[i] == 9)
+            s.pop();
+    }
+    
+    //We now have of queue of stacks
+    //Read through file and test all possible word combinations
+
+    if(!inputFile.is_open()){
+        cout << fileName << " was not opened!" << endl;
+        return;
+    }
+    
+    while(!inputFile.eof()){
+        inputFile >> temp;
+        //HARD PART.... Find combinations
+        
+        
+        
+        
+            
+        //Compare temp with current word   
+        if(temp == currentWord){
+            possibleWords.push_back(currentWord);
+        }
             
     }
-    
-    //We now have a list of arrays
-    //Next we make our word combinations
-    int i = 0;
-    
-    while(i < stringLength){
-        
-    }
-    
-    
-    
-    
-    
-   
-    if(inputFile.is_open()){
-        while(!inputFile.eof()){
-            inputFile >> temp;
-            //Compare temp with current word
-            if(temp == currentWord)
-                possibleWords.push_back(currentWord);
-        }
-    }else{
-        cout << fileName << " was not opened!" << endl;
-    }
-    
-    
-    for(vector<string>::iterator it = possibleWords.begin(); it != possibleWords.end(); it++){
-        cout << *it << endl;
-    }
-    
-    
+  
     inputFile.close();
 }
-
-
-
-
-/* CODE GRAVEYARD
- 
-    currentWord += q.front().top();
-    q.push(q.front());
-    q.pop();
-    currentWord += q.front().top();
-    q.push(q.front());
-    q.pop();
-    currentWord += q.front().top();
-    q.push(q.front());
-    q.pop();
- 
- 
- 
- 
- 
- 
- */
