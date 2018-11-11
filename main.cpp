@@ -98,6 +98,13 @@ void numberToWord(const string &str){
         }
             
     }
+    
+    
+    cout << "List of Possible Words:" << endl;
+    for(vector<string>::iterator it = possibleWords.begin(); it != possibleWords.end(); it++){
+        cout << *it << endl;
+    }
+    
   
     inputFile.close();
 }
