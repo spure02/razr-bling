@@ -3,7 +3,7 @@
 #include <string>
 #include <stack>
 #include <vector>
-#include <queue>
+#include <array>
 using namespace std;
 
 void numberToWord(const string &s);
@@ -18,62 +18,61 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-
 void numberToWord(const string &str){
     int stringLength = str.length();
-    queue<stack<char> > q;//Creates our queue of stacks(char)
-    stack<char> s;
+    char arr[4][stringLength];
     vector<string> possibleWords;//Push possible words into this vector
     ifstream inputFile;
     string fileName = "CutieHackDictionary.txt";
     inputFile.open(fileName);
     string temp; 
     string currentWord;
-    stack<char> copy;
     
-    //Create our queue of stacks
-    for(int i = 0; i < stringLength; i++){//Going through our input(#)
-        if(str[i] == '2'){
-            s.push('C');
-            s.push('B');
-            s.push('A');
-        }else if(str[i] == '3'){
-            s.push('F');
-            s.push('E');
-            s.push('D');
-        }else if(str[i] == '4'){
-            s.push('I');
-            s.push('H');
-            s.push('G');
-        }else if(str[i] == '5'){
-            s.push('L');
-            s.push('K');
-            s.push('J');
-        }else if(str[i] == '6'){
-            s.push('O');
-            s.push('N');
-            s.push('M');
-        }else if(str[i] == '7'){
-            s.push('S');
-            s.push('R');
-            s.push('Q');
-            s.push('P');
-        }else if(str[i] == '8'){
-            s.push('V');
-            s.push('U');
-            s.push('T');
-        }else if(str[i] == '9'){
-            s.push('Z');
-            s.push('Y');
-            s.push('X');
-            s.push('W');
+    //Create our 2-D Array
+    for(int i = 0; i < stringLength; i++){
+        for(int col = 0; col < 4; col++){
+            if(str[i] == '2'){
+                arr[0][col] = 'A';
+                arr[1][col] = 'B';
+                arr[2][col] = 'C';
+                arr[3][col] = 0;
+            }else if(str[i] == '3'){
+                arr[0][col] = 'D';
+                arr[1][col] = 'E';
+                arr[2][col] = 'F';
+                arr[3][col] = 0;
+            }else if(str[i] == '4'){
+                arr[0][col] = 'G';
+                arr[1][col] = 'H';
+                arr[2][col] = 'I';
+                arr[3][col] = 0;
+            }else if(str[i] == '5'){
+                arr[0][col] = 'J';
+                arr[1][col] = 'K';
+                arr[2][col] = 'L';
+                arr[3][col] = 0;
+            }else if(str[i] == '6'){
+                arr[0][col] = 'M';
+                arr[1][col] = 'N';
+                arr[2][col] = 'O';
+                arr[3][col] = 0;
+            }else if(str[i] == '7'){
+                arr[0][col] = 'P';
+                arr[1][col] = 'Q';
+                arr[2][col] = 'R';
+                arr[3][col] = 'S';
+            }else if(str[i] == '8'){
+                arr[0][col] = 'T';
+                arr[1][col] = 'U';
+                arr[2][col] = 'V';
+                arr[3][col] = 0;
+            }else if(str[i] == '9'){
+                arr[0][col] = 'W';
+                arr[1][col] = 'X';
+                arr[2][col] = 'Y';
+                arr[3][col] = 'Z';
+            }
         }
-        q.push(s);
-        s.pop();
-        s.pop();
-        s.pop();
-        if(str[i] == 7 || str[i] == 9)
-            s.pop();
     }
     
     //We now have of queue of stacks
@@ -84,19 +83,49 @@ void numberToWord(const string &str){
         return;
     }
     
-    while(!inputFile.eof()){
+    int counter[stringLength];
+    int length[stringLength];
+    
+    for(int i = 0; i < stringLength; i++){
+        if(str[i] == '7' || str[i] == '9'){
+            length[i] = 4;
+        }else{
+            length[i] = 3;
+        }
+    }
+    
+    for(int i = 0; i < stringLength; i++)
+        counter[i] = 0;
+        
+    int totalCombo = 1;
+    
+    for(int i = 0; i < stringLength; i++){
+        totalCombo *= length[i];
+    }
+    
+    cout << "Total Combo is " << totalCombo << endl;
+
+    
+    while(!inputFile.eof()){//For every word in the dictionary
         inputFile >> temp;
         //HARD PART.... Find combinations
-        
-        
-        
-        
+        for(int i = 0; i < totalCombo; i++){//Get every possible combination
+            for(int row = 0; row < 4; row++){
+                for(int col = 0; col < stringLength; col++){
+                    currentWord += arr[row][counter[col]];
+                }
+            }
             
-        //Compare temp with current word   
-        if(temp == currentWord){
-            possibleWords.push_back(currentWord);
-        }
             
+            
+            //Compare temp with current word   
+            if(temp == currentWord){
+                possibleWords.push_back(currentWord);
+                break;
+            }
+//            cout << "CurrentWord = " << currentWord << endl;
+            currentWord = "";
+        }              
     }
     
     
@@ -108,3 +137,21 @@ void numberToWord(const string &str){
   
     inputFile.close();
 }
+
+
+
+
+/* CODE GRAVEYARD
+            for(int j = 0; j < stringLength; j++){
+                currentWord += arr[j][counter[j]];
+            }
+            for(int k = stringLength - 1 ; k >= 0; k--){
+                if(counter[k] + 1 < length[k]){
+                    counter[k]++;
+                    break;
+                }
+                counter[k] = 0;
+            }
+ 
+ 
+ */
